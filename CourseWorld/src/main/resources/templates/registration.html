@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: registerHeader"></header>
+<div th:if="${loginError}" class="alert alert-warning alert-dismissible fade show shadow-sm rounded" style="opacity: 0.8" role="alert">
+    <strong th:text="#{notUniqueLoginAlert}"></strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="container mt-sm-5 " style="width: 30%;">
+    <div class="jumbotron jumbotron-liquid pt-3" style="height: 408px;">
+        <form th:action="@{/user/register}" method="post" th:object="${user}">
+            <div class="form-group">
+                <label style="color: #083A63;" th:text="#{login}"></label>
+                <input type="text" th:field="*{login}" id="login" class="form-control" pattern="\b\w+\b"/>
+                <small class="form-text text-muted" style="color: #083A63;" th:text="#{enterLogin}"></small>
+            </div>
+            <div class="form-group">
+                <label style="color: #083A63;" th:text="#{password}"></label>
+                <input class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" type="password" th:field="*{password}"/>
+                <small class="form-text text-muted" style="color: #083A63;" th:text="#{enterPassword}"></small>
+            </div>
+            <div class="form-group">
+                <label style="color: #083A63;" th:text="#{description}"></label>
+                <input class="form-control" type="text" th:field="*{description}"/>
+                <small class="form-text text-muted" style="color: #083A63;" th:text="#{enterDescription}"></small>
+            </div>
+            <input type="submit" class="btn btn-outline-success"
+                   data-toggle="tooltip bg-dark" data-placement="bottom"
+                   th:title="#{registerTitle}"
+                   style="color: #F5EFE5; background-color: #27A8CF; border-color: #27A8CF;" th:value="#{registration}"/>
+        </form>
+    </div>
+</div>
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

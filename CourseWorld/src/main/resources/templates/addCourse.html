@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeader"></header>
+
+<div class="container mt-sm-5 " style="width: 30%;">
+    <div class="jumbotron jumbotron-liquid pt-3">
+        <form action="#" th:action="@{/courses/add}" th:object="${course}" method="post">
+            <div class="form-group">
+                <label for="name" th:text="#{course.name}"></label>
+                <input id="name" type="text" th:field="*{name}" class="form-control"/>
+                <small class="form-text text-muted" th:text="#{course.name.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="subject" th:text="#{course.subject}"></label>
+                <input type="text" th:field="*{subject}" name="subject" class="form-control"/>
+                <small id="subject" class="form-text text-muted" th:text="#{course.subject.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="description" th:text="#{course.description}"></label>
+                <input type="text" th:field="*{description}" name="description" class="form-control"/>
+                <small id="description" class="form-text text-muted" th:text="#{course.description.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="price" th:text="#{course.price}"></label>
+                <input type="number" th:field="*{price}" value="0" step="0.01" min="0" name="price" class="form-control"/>
+                <small id="price" class="form-text text-muted" th:text="#{course.price.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-success" data-toggle="tooltip bg-dark" data-placement="bottom" th:text="#{button.addCourse}">
+
+                </button>
+                <button type="button" class="btn btn-outline-danger" th:text="#{button.back}" onclick="javascript:history.back()"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

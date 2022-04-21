@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeader"></header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h1 class="my-4 text-center" th:text="${currentCourse.getName()}"></h1>
+                </div>
+            </div>
+            <a th:href="@{/courses/{courseId}/lectures(courseId=${currentCourse.getId()})}"
+               class="btn btn-primary" type="submit" th:text="#{button.toLecturesList}"></a>
+            <br><br>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title" th:text="${currentLecture.getName()}"></h2>
+                    <p class="card-text" th:text="#{lecture.theme.label(${currentLecture.getTheme()})}"></p>
+                    <p class="card-text" th:text="${currentLecture.getContent()}"></p>
+                    <th:block th:if="${hasPrevious}">
+                        <a th:href="@{/courses/{courseId}/lectures/{id}(courseId = ${currentCourse.getId()}, id=${previousLecture.getId()})}"
+                           class="btn btn-primary" type="submit" th:text="#{button.previousLecture}"></a>
+                    </th:block>
+
+                    <th:block th:if="${currentLecture.getTest()!=null}">
+                        <a href="/StudyPlace/Controller?command=getTask"
+                           class="btn btn-primary" type="submit" th:text="#{button.test}"></a>
+                    </th:block>
+                    <th:block th:if="${hasNext}">
+                        <a th:href="@{/courses/{courseId}/lectures/{id}(courseId = ${currentCourse.getId()}, id=${nextLecture.getId()})}"
+                           class="btn btn-primary" type="submit" th:text="#{button.nextLecture}"></a>
+                    </th:block>
+
+
+                    <th:block th:if="${currentCourse.getCreator().equals(currentUser)}">
+                        <th:block th:if="${!hasNext}">
+                            <a th:href="@{/courses/{courseId}/lectures/add(courseId = ${currentCourse.getId()})}"
+                               class="btn btn-primary" type="submit" th:text="#{button.addLecture}"></a>
+                        </th:block>
+
+                        <th:block th:if="${currentLecture.getTest()==null}">
+                            <a href="/StudyPlace/Controller?command=openAddTask"
+                               class="btn btn-primary" type="submit" th:text="#{button.addTest}"></a>
+                        </th:block>
+                    </th:block>
+                    <th:block th:if="${!hasNext && !currentCourse.getCreator().equals(currentUser)}">
+                        <a th:href="@{/courses/{courseId}(courseId = ${currentCourse.getId()})}"
+                           class="btn btn-primary" type="submit" th:text="#{button.finish}"> </a>
+                    </th:block>
+
+                </div>
+                <div class="card-footer text-muted" th:text="#{lecture.author(${currentCourse.getCreator().getLogin()})}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeader"></header>
+
+
+<div class="container mt-sm-5 " style="width: 40%;">
+    <div class="jumbotron jumbotron-liquid pt-3">
+        <form th:action="@{/courses/{courseId}/lectures/add(courseId = ${currentCourse.getId()})}" th:object="${lecture}" method="post">
+            <div class="form-group">
+                <label for="name" style="color: #083A63;" th:text="#{course.name}"></label>
+                <input type="text" th:field="*{name}" class="form-control"/>
+                <small id="name" class="form-text text-muted" style="color: #083A63;" th:text="#{lecture.name.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="theme" style="color: #083A63;" th:text="#{lecture.theme}"></label>
+                <input type="text" th:field="*{theme}" class="form-control"/>
+                <small id="theme" class="form-text text-muted" style="color: #083A63;" th:text="#{lecture.theme.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="content" style="color: #083A63;" th:text="#{lecture.content}"></label>
+                <textarea type="tex" th:field="*{content}" rows="7" cols="50" class="form-control"></textarea>
+                <small id="content" class="form-text text-muted" style="color: #083A63;" th:text="#{lecture.content.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="position" th:text="#{lecture.position}"></label>
+                <input type="number" th:field="*{position}" value="1" step="1" min="1" th:max="${maxPosition}" class="form-control"/>
+                <small id="position" class="form-text text-muted" th:text="#{lecture.position.title}"></small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-success" data-toggle="tooltip bg-dark" data-placement="bottom" th:text="#{button.addLecture}"></button>
+                <button type="button" class="btn btn-outline-danger" onclick="javascript:history.back()" th:text="#{button.back}"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

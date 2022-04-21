@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeader"></header>
+
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3 class="card-title" style="text-transform: capitalize; color:#27A8CF;"
+                            th:text="${currentCourse.name}"></h3>
+                        <th:block th:if="${currentCourse.getPrice().equals(0.0)}">
+                            <h4 th:text="#{freePrice}"></h4>
+                        </th:block>
+                        <th:block th:unless="${currentCourse.getPrice().equals(0.0)}">
+                            <h4 th:text="#{price(${currentCourse.getPrice()})}"></h4>
+                        </th:block>
+                        <h6 th:text="#{teacher(${currentCourse.getCreator().login})}"></h6>
+
+                        <label class="card-text h-25" th:text="#{subject(${currentCourse.getSubject()})}"></label>
+                        <p class="card-text" th:text="${currentCourse.description}"></p>
+                        <p class="d-flex justify-content-between">
+                            <label class="card-text" th:text="#{rate(${currentCourse.getRate()})}"> </label>
+                            <small class="text-muted"
+                                   th:text="#{numberOfVotes(${currentCourse.getNumberOfVotes()})}"> </small>
+                        </p>
+                        <div class="mt-2">
+                            <th:block th:if="${currentCourse.getCreator().equals(currentUser)}">
+                                <a th:href="@{/courses/{id}/edit(id=${currentCourse.getId()})}"
+                                   class="btn btn-primary" type="submit" th:text="#{button.editCourse}"></a>
+                                <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
+                                   class="btn btn-primary" type="submit" th:text="#{button.viewLectures}"></a>
+                            </th:block>
+                            <th:block th:if="${isSubscribed}">
+                                <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
+                                   class="btn btn-primary" type="submit" th:text="(${subscription.getStatus().equals('Subscribed')})? #{button.startCourse} : #{button.viewLectures}"></a>
+                                <p class="d-flex justify-content-between">
+                                    <label class="card-text" th:text="#{course.subscription.status(${subscription.getStatus()})}"> </label>
+                                    <label class="card-text"
+                                           th:text="#{course.subscription.mark(${subscription.getCurrentMark()})}"> </label>
+                                </p>
+                            </th:block>
+                            <th:block th:if="${!isSubscribed && !currentCourse.getCreator().equals(currentUser)}">
+                                <th:block th:if="${currentCourse.getPrice().equals(0.0)}">
+                                    <form method="POST" th:action="@{/courses/subscribe(courseId=${currentCourse.getId()},userId = ${currentUser.getId()})}">
+                                        <button type="submit" name="submit" value="value" class="btn btn-primary" th:text="#{button.subscribe}"></button>
+                                    </form>
+                                </th:block>
+                                <th:block th:unless="${currentCourse.getPrice().equals(0.0)}">
+                                    <a href="/StudyPlace/Controller?command=subscribeCourse&courseId=${sessionScope.thisCourse.getId()}"
+                                       class="btn btn-primary" type="submit" th:text="#{button.buy}"></a>
+                                </th:block>
+                            </th:block>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

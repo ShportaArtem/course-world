@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<th:block sec:authorize="isAuthenticated()">
+<header th:insert="fragments.html :: mainHeader"></header>
+</th:block>
+<th:block sec:authorize="!isAuthenticated()">
+    <header th:insert="fragments.html :: registerHeader"></header>
+</th:block>
+<div class="container-fluid">
+    <div class="container"><br>
+        <div class="row">
+            <div class="col-lg-12 d-flex justify-content-center">
+                <div class="jumbotron">
+                    <h1 class="display-4" th:text="#{error(${error}, ${status})}"></h1>
+                    <p class="lead" th:text="#{errorMessage(${message})}"></p>
+                    <hr class="my-4">
+                    <p th:text="#{errorPath(${path})}"></p>
+                    <a class="btn btn-primary btn-lg" th:href="@{/}" role="button" th:text="#{button.homepage}"></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

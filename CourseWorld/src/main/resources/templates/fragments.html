@@ -104,6 +104,40 @@
                 integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
                 crossorigin="anonymous"></script>
     </div>
+
+    <div th:fragment="questions" th:each="question, itemStat : ${currentTest.getQuestions()}" class="card st-8 bg-info"
+         style="background-color:white!important;">
+        <ul>
+            <h3 th:text="${question.getQuestionText()}"></h3>
+            <input type="hidden" th:field="*{answers[__${itemStat.index}__].question}" th:value="${question.getQuestionText()}"/>
+            <h5 style="color:#777777" th:text="${question.getDescription()}"></h5>
+            <li>
+                <input type="radio" th:id="${question.getFirstAnswer()}"
+                       th:name="${question.getQuestionText()}" th:field="*{answers[__${itemStat.index}__].answer}" th:value="${question.getFirstAnswer()}">
+                <label th:for="${question.getFirstAnswer()}"
+                       th:text="${question.getFirstAnswer()}"></label>
+            </li>
+            <li>
+                <input type="radio" th:id="${question.getSecondAnswer()}"
+                       th:name="${question.getQuestionText()}" th:value="${question.getSecondAnswer()}">
+                <label th:for="${question.getSecondAnswer()}"
+                       th:text="${question.getSecondAnswer()}"></label>
+            </li>
+            <li>
+                <input type="radio" th:id="${question.getThirdAnswer()}"
+                       th:name="${question.getQuestionText()}" th:value="${question.getThirdAnswer()}">
+                <label th:for="${question.getThirdAnswer()}"
+                       th:text="${question.getThirdAnswer()}"></label>
+            </li>
+            <li>
+                <input type="radio" th:id="${question.getFourthAnswer()}"
+                       th:name="${question.getQuestionText()}" th:value="${question.getFourthAnswer()}">
+                <label th:for="${question.getFourthAnswer()}"
+                       th:text="${question.getFourthAnswer()}"></label>
+            </li>
+        </ul>
+    </div>
+
 <footer th:fragment="footer" class="footer fixed-bottom text-align-center text-light bg-dark">
     <div class="container">
         <div class="footer-copyright">

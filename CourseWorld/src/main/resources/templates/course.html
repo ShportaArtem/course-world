@@ -35,8 +35,14 @@
                                    class="btn btn-primary" type="submit" th:text="#{button.viewLectures}"></a>
                             </th:block>
                             <th:block th:if="${isSubscribed}">
-                                <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
-                                   class="btn btn-primary" type="submit" th:text="(${subscription.getStatus().equals('Subscribed')})? #{button.startCourse} : #{button.viewLectures}"></a>
+                                <th:block th:if="${subscription.getStatus().equals('Subscribed')}">
+                                    <a th:href="@{/courses/{id}/start(id = ${currentCourse.getId()})}"
+                                       class="btn btn-primary" type="submit" th:text="#{button.startCourse}"></a>
+                                </th:block>
+                                <th:block th:if="${subscription.getStatus().equals('Started')}">
+                                    <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
+                                       class="btn btn-primary" type="submit" th:text="#{button.viewLectures}"></a>
+                                </th:block>
                                 <p class="d-flex justify-content-between">
                                     <label class="card-text" th:text="#{course.subscription.status(${subscription.getStatus()})}"> </label>
                                     <label class="card-text"

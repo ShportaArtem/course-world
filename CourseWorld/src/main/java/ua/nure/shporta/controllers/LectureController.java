@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import ua.nure.shporta.exception.DBException;
 import ua.nure.shporta.helper.Helper;
 import ua.nure.shporta.model.Course;
@@ -34,8 +36,7 @@ public class LectureController {
 
     @GetMapping
     public String getLectures(@RequestParam(value = "page", required = false) Optional<Integer> page,
-                              @PathVariable Integer courseId, Model model) throws DBException {
-
+                              @PathVariable Integer courseId, Model model) {
         Page<Lecture> lecturePage = lectureService.findLecturesByCourseId(page, courseId);
         model.addAttribute("lecturePage", lecturePage);
         if (lecturePage.getTotalPages() > 0) {
@@ -65,9 +66,10 @@ public class LectureController {
         return "redirect:/courses/" + courseId + "/lectures";
     }
 
-    @GetMapping("/{id}")
-    public String getLecture(@PathVariable Integer courseId, @PathVariable Integer id, Model model) {
-        Lecture currentLecture = lectureService.findLectureById(id);
+    @GetMapping("/{position}")
+    public String getLecture(@PathVariable Integer courseId, @PathVariable Integer position, Model model) {
+        Course currentCourse = (Course) model.getAttribute(CURRENT_COURSE_ATTRIBUTE);
+        Lecture currentLecture = lectureService.findLectureByCourseAndPosition(currentCourse, position);
         model.addAttribute("currentLecture", currentLecture);
         model.addAttribute("hasNext", lectureService.hasNextLecture(currentLecture));
         model.addAttribute("hasPrevious", lectureService.hasPreviousLecture(currentLecture));

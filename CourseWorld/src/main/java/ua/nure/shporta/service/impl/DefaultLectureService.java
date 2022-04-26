@@ -54,6 +54,11 @@ public class DefaultLectureService implements LectureService {
     }
 
     @Override
+    public Lecture findLectureByCourseAndPosition(Course course, Integer position) {
+        return lectureDAO.findLectureByCourseAndPosition(course, position).get();
+    }
+
+    @Override
     public boolean hasPreviousLecture(Lecture lecture) {
         List<Lecture> lectureList = lecture.getCourse().getLectures();
         return lectureList.stream().anyMatch(l -> l.getPosition() == lecture.getPosition() - 1);

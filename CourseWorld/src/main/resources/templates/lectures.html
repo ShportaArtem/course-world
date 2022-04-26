@@ -24,7 +24,7 @@
             <div class="card mb-4" th:each="lecture : ${lecturePage.content}">
                 <div class="card-body">
                     <h2 class="card-title" th:text="${lecture.getName()}"></h2>
-                    <a th:href="@{/courses/{courseId}/lectures/{id}(courseId=${currentCourse.getId()}, id=${lecture.getId()})}"
+                    <a th:href="@{/courses/{courseId}/lectures/{position}(courseId=${currentCourse.getId()}, position=${lecture.getPosition()})}"
                        class="btn btn-primary" type="submit" th:text="#{button.readLecture}"></a>
                 </div>
                 <div class="card-footer text-muted" th:text="${lecture.getPosition()}">

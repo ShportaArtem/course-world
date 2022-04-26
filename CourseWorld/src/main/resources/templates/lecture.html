@@ -21,16 +21,16 @@
                     <p class="card-text" th:text="#{lecture.theme.label(${currentLecture.getTheme()})}"></p>
                     <p class="card-text" th:text="${currentLecture.getContent()}"></p>
                     <th:block th:if="${hasPrevious}">
-                        <a th:href="@{/courses/{courseId}/lectures/{id}(courseId = ${currentCourse.getId()}, id=${previousLecture.getId()})}"
+                        <a th:href="@{/courses/{courseId}/lectures/{position}(courseId = ${currentCourse.getId()}, position=${previousLecture.getPosition()})}"
                            class="btn btn-primary" type="submit" th:text="#{button.previousLecture}"></a>
                     </th:block>
 
                     <th:block th:if="${currentLecture.getTest()!=null}">
-                        <a href="/StudyPlace/Controller?command=getTask"
+                        <a th:href="@{/courses/{courseId}/lectures/test(courseId = ${currentCourse.getId()}, lectureId = ${currentLecture.getId()})}"
                            class="btn btn-primary" type="submit" th:text="#{button.test}"></a>
                     </th:block>
                     <th:block th:if="${hasNext}">
-                        <a th:href="@{/courses/{courseId}/lectures/{id}(courseId = ${currentCourse.getId()}, id=${nextLecture.getId()})}"
+                        <a th:href="@{/courses/{courseId}/lectures/{position}(courseId = ${currentCourse.getId()}, position=${nextLecture.getPosition()})}"
                            class="btn btn-primary" type="submit" th:text="#{button.nextLecture}"></a>
                     </th:block>
 
@@ -42,8 +42,8 @@
                         </th:block>
 
                         <th:block th:if="${currentLecture.getTest()==null}">
-                            <a href="/StudyPlace/Controller?command=openAddTask"
-                               class="btn btn-primary" type="submit" th:text="#{button.addTest}"></a>
+                            <a th:href="@{test/add(lectureId = ${currentLecture.getId()})}"
+                               class="btn btn-primary" type="submit" th:text="#{button.addTest.for}"></a>
                         </th:block>
                     </th:block>
                     <th:block th:if="${!hasNext && !currentCourse.getCreator().equals(currentUser)}">

@@ -10,7 +10,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String question;
+    @Column(name = "question")
+    private String questionText;
     private String firstAnswer;
     private String secondAnswer;
     private String thirdAnswer;
@@ -30,12 +31,12 @@ public class Question {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setQuestionText(String question) {
+        this.questionText = question;
     }
 
     public String getFirstAnswer() {

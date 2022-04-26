@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`users` (
   `description` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`course` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -101,7 +101,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `courseworlddb`.`tests` ;
 
 CREATE TABLE IF NOT EXISTS `courseworlddb`.`tests` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(200) NULL DEFAULT NULL,
   `lecture_id` INT NOT NULL,
@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`tests` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -128,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`questions` (
   `second_answer` VARCHAR(200) NULL DEFAULT NULL,
   `third_answer` VARCHAR(200) NULL DEFAULT NULL,
   `fourth_answer` VARCHAR(200) NULL DEFAULT NULL,
-  `correct_answer` INT NULL DEFAULT NULL,
+  `correct_answer` VARCHAR(200) NULL DEFAULT NULL,
   `description` VARCHAR(200) NULL DEFAULT NULL,
   `tests_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -210,4 +211,9 @@ INSERT INTO course VALUES(default, 'course1', 'description1', 'subject1', 1, 0, 
 INSERT INTO course VALUES(default, 'course2', 'description2', 'subject2', 1, 0, 0,0);
 INSERT INTO course VALUES(default, 'course3', 'description3', 'subject3', 1, 13.99, 0,0);
 INSERT INTO course VALUES(default, 'course4', 'description4', 'subject4', 1, 20, 0,0);
-INSERT INTO subscription VALUES(1,1,0,'IN PROGRESS',DEFAULT);
+INSERT INTO subscription VALUES(1,1,0,'Started',DEFAULT);
+INSERT INTO lecture VALUES(default, 'lecture1', 'theme', 'content', 1, 1);
+INSERT INTO lecture VALUES(default, 'lecture2', 'theme', 'content', 2, 1);
+INSERT INTO lecture VALUES(default, 'lecture3', 'theme', 'content', 3, 1);
+INSERT INTO lecture VALUES(default, 'lecture4', 'theme', 'content', 4, 1);
+INSERT INTO lecture VALUES(default, 'lecture5', 'theme', 'content', 5, 1);

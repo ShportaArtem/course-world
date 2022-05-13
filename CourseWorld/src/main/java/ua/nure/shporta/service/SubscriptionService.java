@@ -1,7 +1,9 @@
 package ua.nure.shporta.service;
 
 import org.springframework.stereotype.Component;
+import ua.nure.shporta.model.Course;
 import ua.nure.shporta.model.Subscription;
+import ua.nure.shporta.model.User;
 
 @Component
 public interface SubscriptionService {
@@ -13,6 +15,7 @@ public interface SubscriptionService {
 
     void finishCourse(Integer userId, Integer courseId);
 
-    void addMark(Integer userId, Integer courseId, Integer mark);
+    void addMark(Integer userId, Integer courseId, Integer mark, boolean changes, Integer oldMark);
 
+    void voteCourse(Integer userId, Integer courseId);
 }

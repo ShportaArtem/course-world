@@ -98,6 +98,16 @@ public class CourseController {
         return "redirect:/courses/" + updatedCourse.getId();
     }
 
+    @PostMapping("/{id}/vote")
+    public String voteCourse(@PathVariable(name = "id") int courseId, @RequestParam Integer rating, Model model) throws DBException {
+
+        Course votedCourse = courseService.findCourseById(courseId);
+        User user = userService.getCurrentUser();
+        courseService.voteCourse(votedCourse, rating);
+        subscriptionService.voteCourse(user.getId(), courseId);
+        return "redirect:/courses/" + courseId;
+    }
+
     @GetMapping("/add")
     public String getCreateForm(Model model) {
         model.addAttribute("course", new Course());

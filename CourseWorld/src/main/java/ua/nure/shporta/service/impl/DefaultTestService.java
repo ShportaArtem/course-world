@@ -52,20 +52,25 @@ public class DefaultTestService implements TestService {
     @Override
     public UsersTest finishTest(User user, Test test, Integer mark) {
         UsersTest usersTest = findUsersTestByUserAndTest(user, test);
+        boolean changes = false;
+        Integer oldMark = null;
         if (usersTest != null) {
-            usersTest.setAttempts(usersTest.getAttempts()+1);
-            if(usersTest.getMark()< mark){
+            usersTest.setAttempts(usersTest.getAttempts() + 1);
+            changes = true;
+            oldMark = usersTest.getMark();
+            if (usersTest.getMark() < mark) {
                 usersTest.setMark(mark);
             }
-        }else{
+        } else {
             usersTest = buildUsersTest(user, test, mark);
         }
-        subscriptionService.addMark(user.getId(), test.getLecture().getCourse().getId(), mark);
+
+        subscriptionService.addMark(user.getId(), test.getLecture().getCourse().getId(), mark, changes, oldMark);
         usersTest = usersTestDAO.saveAndFlush(usersTest);
         return usersTest;
     }
 
-    private UsersTest buildUsersTest(User user, Test test, Integer mark){
+    private UsersTest buildUsersTest(User user, Test test, Integer mark) {
         UsersTest usersTest = new UsersTest();
         usersTest.setTest(test);
         usersTest.setUser(user);

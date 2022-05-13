@@ -12,11 +12,12 @@ import ua.nure.shporta.exception.DBException;
 import ua.nure.shporta.exception.ExceptionMessages;
 import ua.nure.shporta.model.Course;
 import ua.nure.shporta.model.Lecture;
-import ua.nure.shporta.model.Test;
 import ua.nure.shporta.model.User;
 import ua.nure.shporta.service.CourseService;
 import ua.nure.shporta.service.UserService;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 @Component
@@ -83,10 +84,27 @@ public class DefaultCourseService implements CourseService {
         return mark;
     }
 
+    @Override
+    public Course voteCourse(Course course, Integer rate) {
+        course.setSumRate(course.getSumRate() + rate);
+        course.setNumberOfVotes(course.getNumberOfVotes() + 1);
+        course.setRate(calculateRate(course));
+
+        return courseDAO.saveAndFlush(course);
+    }
+
+    private Double calculateRate(Course course) {
+        return BigDecimal.valueOf(Double.valueOf(course.getSumRate()) / course.getNumberOfVotes())
+                .setScale(2, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .doubleValue();
+    }
+
     private Course fulfillNotUpdatableFields(Course oldCourse, Course updatedCourse) {
         updatedCourse.setCreator(oldCourse.getCreator());
         updatedCourse.setRate(oldCourse.getRate());
         updatedCourse.setNumberOfVotes(oldCourse.getNumberOfVotes());
+        updatedCourse.setSumRate(oldCourse.getSumRate());
         return updatedCourse;
     }
 }

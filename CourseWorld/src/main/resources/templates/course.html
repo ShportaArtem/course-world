@@ -12,37 +12,10 @@
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card mt-4">
                     <div class="card-body">
-                        <th:block th:if="${subscription!=null && !subscription.isVoted()}">
-                            <div class="rating">
-                                <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-                            </div>
-                        </th:block>
-                        <th:block th:if="${subscription!=null && subscription.isVoted()}">
-                            <div class="d-flex justify-content-center">
-                                <div class="content text-center">
-                                    <div class="ratings">
-                                        <span class="product-rating">4.6</span><span>/5</span>
-                                        <div class="stars">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="rating-text">
-                                            <span>46 ratings & 15 reviews</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </th:block>
+
                         <h3 class="card-title" style="text-transform: capitalize; color:#27A8CF;"
                             th:text="${currentCourse.name}"></h3>
                         <th:block th:if="${currentCourse.getPrice().equals(0.0)}">
@@ -55,11 +28,34 @@
 
                         <label class="card-text h-25" th:text="#{subject(${currentCourse.getSubject()})}"></label>
                         <p class="card-text" th:text="${currentCourse.description}"></p>
-                        <p class="d-flex justify-content-between">
-                            <label class="card-text" th:text="#{rate(${currentCourse.getRate()})}"> </label>
-                            <small class="text-muted"
-                                   th:text="#{numberOfVotes(${currentCourse.getNumberOfVotes()})}"> </small>
-                        </p>
+                        <th:block th:if="${subscription!=null && !subscription.isVoted() && subscription.getStatus().equals('Finished')}">
+                           <form th:action="@{/courses/{id}/vote(id=${currentCourse.getId()})}" method="post">
+                               <div class="rating">
+                                   <input type="radio" name="rating" value="5" id="5" checked><label for="5">☆</label>
+                                   <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                                   <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                                   <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                                   <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                               </div>
+                               <button type="submit" class="btn btn-outline-success" data-toggle="tooltip bg-dark" data-placement="bottom" th:text="#{button.vote}"></button>
+                           </form>
+
+                        </th:block>
+                        <th:block th:if="${(subscription!=null && (subscription.isVoted() || !subscription.getStatus().equals('Finished'))) || currentCourse.getCreator().equals(currentUser)}">
+                            <div class="d-flex justify-content-left text-center">
+                                <div class="ratings">
+                                    <span class="product-rating" th:text="#{rate(${currentCourse.getRate()})}"></span>
+                                    <div class="stars">
+                                        <th:block th:each="i : ${#numbers.sequence(1, currentCourse.getRate(), 1)}">
+                                            <i class="fa fa-star"></i>
+                                        </th:block>
+                                    </div>
+                                    <div class="rating-text">
+                                        <span th:text="#{numberOfVotes(${currentCourse.getNumberOfVotes()})}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
                         <div class="mt-2">
                             <th:block th:if="${currentCourse.getCreator().equals(currentUser)}">
                                 <a th:href="@{/courses/{id}/edit(id=${currentCourse.getId()})}"

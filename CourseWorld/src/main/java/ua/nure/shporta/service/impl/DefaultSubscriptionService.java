@@ -49,13 +49,24 @@ public class DefaultSubscriptionService implements SubscriptionService {
     }
 
     @Override
-    public void addMark(Integer userId, Integer courseId, Integer mark) {
+    public void addMark(Integer userId, Integer courseId, Integer mark, boolean changes, Integer oldMark) {
         Subscription subscription = findByUsersIdAndCourseId(userId, courseId);
-        subscription.setCurrentMark(subscription.getCurrentMark() + mark);
+        if (changes) {
+            subscription.setCurrentMark(subscription.getCurrentMark() - oldMark + mark);
+        } else {
+            subscription.setCurrentMark(subscription.getCurrentMark() + mark);
+        }
         subscriptionDAO.saveAndFlush(subscription);
     }
 
-    private Subscription build(User user, Course course){
+    @Override
+    public void voteCourse(Integer userId, Integer courseId) {
+        Subscription subscription = findByUsersIdAndCourseId(userId, courseId);
+        subscription.setVoted(true);
+        subscriptionDAO.saveAndFlush(subscription);
+    }
+
+    private Subscription build(User user, Course course) {
         Subscription subscription = new Subscription();
         subscription.setCurrentMark(0);
         subscription.setVoted(false);

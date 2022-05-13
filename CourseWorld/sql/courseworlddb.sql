@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`course` (
   `creator_id` INT NOT NULL,
   `price` DOUBLE NULL DEFAULT NULL,
   `rate` DOUBLE NULL DEFAULT NULL,
+  `sum_rate` INT NULL DEFAULT NULL,
   `number_of_vote` INT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_course_users_idx` (`creator_id` ASC) VISIBLE,
@@ -208,10 +209,10 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO users VALUES(default, 'password', 'login', 'ROLE_USER', 'description');
 INSERT INTO users VALUES(default, 'password', 'username', 'ROLE_USER', 'post works');
-INSERT INTO course VALUES(default, 'course1', 'description1', 'subject1', 1, 0, 0,0);
-INSERT INTO course VALUES(default, 'course2', 'description2', 'subject2', 1, 0, 0,0);
-INSERT INTO course VALUES(default, 'course3', 'description3', 'subject3', 1, 13.99, 0,0);
-INSERT INTO course VALUES(default, 'course4', 'description4', 'subject4', 1, 20, 0,0);
+INSERT INTO course VALUES(default, 'course1', 'description1', 'subject1', 1, 0, 0,0,0);
+INSERT INTO course VALUES(default, 'course2', 'description2', 'subject2', 1, 0, 0,0,0);
+INSERT INTO course VALUES(default, 'course3', 'description3', 'subject3', 1, 13.99, 0,0,0);
+INSERT INTO course VALUES(default, 'course4', 'description4', 'subject4', 1, 20, 0,0,0);
 INSERT INTO subscription VALUES(2,1,'In progress',DEFAULT,0,0);
 INSERT INTO lecture VALUES(default, 'lecture1', 'theme', 'content', 1, 1);
 INSERT INTO lecture VALUES(default, 'lecture2', 'theme', 'content', 2, 1);

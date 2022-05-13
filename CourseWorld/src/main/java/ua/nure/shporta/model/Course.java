@@ -20,6 +20,9 @@ public class Course implements Serializable {
     private Double price;
     private Double rate;
 
+    @Column(name = "sum_rate")
+    private Integer sumRate;
+
     @Column(name = "number_of_vote")
     private Integer numberOfVotes;
 
@@ -101,5 +104,13 @@ public class Course implements Serializable {
 
     public void setLectures(List<Lecture> lectures) {
         this.lectures = lectures;
+    }
+
+    public Integer getSumRate() {
+        return sumRate;
+    }
+
+    public void setSumRate(Integer sumRate) {
+        this.sumRate = sumRate;
     }
 }

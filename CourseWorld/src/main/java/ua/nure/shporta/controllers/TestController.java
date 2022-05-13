@@ -57,8 +57,6 @@ public class TestController {
         User currentUser = userService.getCurrentUser();
         model.addAttribute(CURRENT_TEST_ATTRIBUTE, currentTest);
         model.addAttribute("answers", createAnswersDTO(currentTest.getQuestions()));
-        logger.info("Answer1,question - {}", createAnswersDTO(currentTest.getQuestions()).getAnswers().get(0).getQuestion());
-        logger.info("Questions - {}", currentTest.getQuestions());
         model.addAttribute(CURRENT_USERS_TEST_ATTRIBUTE, testService.findUsersTestByUserAndTest(currentUser, currentTest));
         model.addAttribute(CURRENT_USER_ATTRIBUTE, currentUser);
         model.addAttribute("hasNext", lectureService.hasNextLecture(currentLecture));
@@ -72,14 +70,13 @@ public class TestController {
         Lecture currentLecture = (Lecture) model.getAttribute(CURRENT_LECTURE_ATTRIBUTE);
         Lecture nextLecture = lectureService.findNextLecture(currentLecture);
         Test currentTest = testService.findTestById(currentLecture.getTest().getId());
-        for(AnswerDTO answer : answers.getAnswers()){
-            System.out.println(answer.getQuestion());
-            System.out.println(answer.getAnswer());
-        }
+
         Integer mark = testService.checkTest(answers, currentTest.getQuestions());
         testService.finishTest(userService.getCurrentUser(), currentTest, mark);
-
-        return "redirect:/courses/"+ courseId + "/lectures/" + nextLecture.getPosition();
+        if(nextLecture!=null){
+            return "redirect:/courses/"+ courseId + "/lectures/" + nextLecture.getPosition();
+        }
+        return "redirect:/courses/" + courseId + "/lectures/" + currentLecture.getPosition();
     }
 
     private AnswersDTO createAnswersDTO(List<Question> questions){

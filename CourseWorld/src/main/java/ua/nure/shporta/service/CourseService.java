@@ -22,4 +22,6 @@ public interface CourseService {
     Course updateCourse(Course course);
 
     Integer overallMark(Course course);
+
+    Course voteCourse(Course course, Integer rate);
 }

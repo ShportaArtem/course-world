@@ -4,6 +4,15 @@ public class AnswerDTO {
     private String question;
     private String answer;
 
+    public AnswerDTO(){
+        super();
+    }
+
+    public AnswerDTO(String question){
+        super();
+        this.question = question;
+    }
+
     public String getQuestion() {
         return question;
     }

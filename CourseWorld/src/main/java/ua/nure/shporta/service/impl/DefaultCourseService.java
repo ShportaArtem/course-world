@@ -11,6 +11,8 @@ import ua.nure.shporta.dao.UserDAO;
 import ua.nure.shporta.exception.DBException;
 import ua.nure.shporta.exception.ExceptionMessages;
 import ua.nure.shporta.model.Course;
+import ua.nure.shporta.model.Lecture;
+import ua.nure.shporta.model.Test;
 import ua.nure.shporta.model.User;
 import ua.nure.shporta.service.CourseService;
 import ua.nure.shporta.service.UserService;
@@ -72,7 +74,16 @@ public class DefaultCourseService implements CourseService {
         return courseDAO.saveAndFlush(fulfillNotUpdatableFields(oldCourse, course));
     }
 
-    private Course fulfillNotUpdatableFields(Course oldCourse, Course updatedCourse){
+    @Override
+    public Integer overallMark(Course course) {
+        int mark = 0;
+        for (Lecture lecture : course.getLectures()) {
+            mark += lecture.getTest() != null ? lecture.getTest().getQuestions().size() : 0;
+        }
+        return mark;
+    }
+
+    private Course fulfillNotUpdatableFields(Course oldCourse, Course updatedCourse) {
         updatedCourse.setCreator(oldCourse.getCreator());
         updatedCourse.setRate(oldCourse.getRate());
         updatedCourse.setNumberOfVotes(oldCourse.getNumberOfVotes());

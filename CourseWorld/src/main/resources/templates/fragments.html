@@ -5,8 +5,94 @@
     <title>CourseWorld</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+    <th:block th:fragment="rating-vote-style">
+        .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center
+        }
+
+        .rating>input {
+        display: none
+        }
+
+        .rating>label {
+        position: relative;
+        width: 0.8em;
+        font-size: 2.5vw;
+        color: #FFD600;
+        cursor: pointer
+        }
+
+        .rating>label::before {
+        content: "\2605";
+        position: absolute;
+        opacity: 0
+        }
+
+        .rating>label:hover:before,
+        .rating>label:hover~label:before {
+        opacity: 1 !important
+        }
+
+        .rating>input:checked~label:before {
+        opacity: 1
+        }
+
+        .rating:hover>input:checked~label:before {
+        opacity: 0.4
+        }
+        @media only screen and (max-width: 200px) {
+        h1 {
+        font-size: 14px
+        }
+
+        p {
+        font-size: 12px
+        }
+    </th:block>
+    <th:block th:fragment="rating-voted-style">
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+        body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Open Sans', serif;
+        background: #eee;
+        }
+
+        .content{
+        width: 420px;
+        margin-top: 100px;
+        }
+
+        .ratings{
+
+        background-color:#fff;
+        padding: 54px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 10px 10px #E0E0E0;
+        }
+
+        .product-rating{
+
+        font-size: 50px;
+        }
+
+        .stars i{
+
+        font-size: 18px;
+        color: #FFD600;
+        }
+
+        .rating-text{
+        margin-top: 10px;
+        }
+    </th:block>
+
 <header th:fragment="loginHeader">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow-sm">
             <a th:href="@{/}" class="navbar-brand d-flex align-items-center">
@@ -105,38 +191,70 @@
                 crossorigin="anonymous"></script>
     </div>
 
-    <div th:fragment="questions" th:each="question, itemStat : ${currentTest.getQuestions()}" class="card st-8 bg-info"
+    <div th:fragment="questionsForm" th:each="question, itemStat : ${currentTest.getQuestions()}" class="card st-8 bg-info"
          style="background-color:white!important;">
         <ul>
             <h3 th:text="${question.getQuestionText()}"></h3>
-            <input type="hidden" th:field="*{answers[__${itemStat.index}__].question}" th:value="${question.getQuestionText()}"/>
+            <input type="hidden" th:field="*{answers[__${itemStat.index}__].question}"/>
             <h5 style="color:#777777" th:text="${question.getDescription()}"></h5>
             <li>
                 <input type="radio" th:id="${question.getFirstAnswer()}"
-                       th:name="${question.getQuestionText()}" th:field="*{answers[__${itemStat.index}__].answer}" th:value="${question.getFirstAnswer()}">
+                       th:name="${question.getQuestionText()}" th:field="*{answers[__${itemStat.index}__].answer}" th:value="${question.getFirstAnswer()}"/>
                 <label th:for="${question.getFirstAnswer()}"
                        th:text="${question.getFirstAnswer()}"></label>
             </li>
             <li>
-                <input type="radio" th:id="${question.getSecondAnswer()}"
-                       th:name="${question.getQuestionText()}" th:value="${question.getSecondAnswer()}">
+                <input type="radio" th:id="${question.getSecondAnswer()}" th:field="*{answers[__${itemStat.index}__].answer}"
+                       th:name="${question.getQuestionText()}" th:value="${question.getSecondAnswer()}"/>
                 <label th:for="${question.getSecondAnswer()}"
                        th:text="${question.getSecondAnswer()}"></label>
             </li>
             <li>
-                <input type="radio" th:id="${question.getThirdAnswer()}"
+                <input type="radio" th:id="${question.getThirdAnswer()}" th:field="*{answers[__${itemStat.index}__].answer}"
                        th:name="${question.getQuestionText()}" th:value="${question.getThirdAnswer()}">
                 <label th:for="${question.getThirdAnswer()}"
                        th:text="${question.getThirdAnswer()}"></label>
             </li>
             <li>
-                <input type="radio" th:id="${question.getFourthAnswer()}"
+                <input type="radio" th:id="${question.getFourthAnswer()}" th:field="*{answers[__${itemStat.index}__].answer}"
                        th:name="${question.getQuestionText()}" th:value="${question.getFourthAnswer()}">
                 <label th:for="${question.getFourthAnswer()}"
                        th:text="${question.getFourthAnswer()}"></label>
             </li>
         </ul>
     </div>
+
+<div th:fragment="questions" th:each="question : ${currentTest.getQuestions()}" class="card st-8 bg-info"
+     style="background-color:white!important;">
+    <ul>
+        <h3 th:text="${question.getQuestionText()}"></h3>
+        <h5 style="color:#777777" th:text="${question.getDescription()}"></h5>
+        <li>
+            <input type="radio" th:id="${question.getFirstAnswer()}"
+                   th:name="${question.getQuestionText()}" th:value="${question.getFirstAnswer()}"/>
+            <label th:for="${question.getFirstAnswer()}"
+                   th:text="${question.getFirstAnswer()}"></label>
+        </li>
+        <li>
+            <input type="radio" th:id="${question.getSecondAnswer()}"
+                   th:name="${question.getQuestionText()}" th:value="${question.getSecondAnswer()}"/>
+            <label th:for="${question.getSecondAnswer()}"
+                   th:text="${question.getSecondAnswer()}"></label>
+        </li>
+        <li>
+            <input type="radio" th:id="${question.getThirdAnswer()}"
+                   th:name="${question.getQuestionText()}" th:value="${question.getThirdAnswer()}">
+            <label th:for="${question.getThirdAnswer()}"
+                   th:text="${question.getThirdAnswer()}"></label>
+        </li>
+        <li>
+            <input type="radio" th:id="${question.getFourthAnswer()}"
+                   th:name="${question.getQuestionText()}" th:value="${question.getFourthAnswer()}">
+            <label th:for="${question.getFourthAnswer()}"
+                   th:text="${question.getFourthAnswer()}"></label>
+        </li>
+    </ul>
+</div>
 
 <footer th:fragment="footer" class="footer fixed-bottom text-align-center text-light bg-dark">
     <div class="container">

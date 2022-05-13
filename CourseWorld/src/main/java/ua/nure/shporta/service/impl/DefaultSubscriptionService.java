@@ -41,9 +41,24 @@ public class DefaultSubscriptionService implements SubscriptionService {
         subscriptionDAO.saveAndFlush(subscription);
     }
 
+    @Override
+    public void finishCourse(Integer userId, Integer courseId) {
+        Subscription subscription = findByUsersIdAndCourseId(userId, courseId);
+        subscription.setStatus(SubscriptionConstants.FINISHED_STATUS);
+        subscriptionDAO.saveAndFlush(subscription);
+    }
+
+    @Override
+    public void addMark(Integer userId, Integer courseId, Integer mark) {
+        Subscription subscription = findByUsersIdAndCourseId(userId, courseId);
+        subscription.setCurrentMark(subscription.getCurrentMark() + mark);
+        subscriptionDAO.saveAndFlush(subscription);
+    }
+
     private Subscription build(User user, Course course){
         Subscription subscription = new Subscription();
         subscription.setCurrentMark(0);
+        subscription.setVoted(false);
         subscription.setStatus(SubscriptionConstants.SUBSCRIBED_STATUS);
         subscription.setCourse(course);
         subscription.setUser(user);

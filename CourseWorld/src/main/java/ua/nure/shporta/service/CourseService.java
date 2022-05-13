@@ -20,4 +20,6 @@ public interface CourseService {
     Course createCourse(Course course);
 
     Course updateCourse(Course course);
+
+    Integer overallMark(Course course);
 }

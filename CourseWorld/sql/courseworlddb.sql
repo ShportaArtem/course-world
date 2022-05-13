@@ -153,7 +153,8 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`subscription` (
   `course_id` INT NOT NULL,
   `status` VARCHAR(45) NOT NULL,
   `id` INT NOT NULL AUTO_INCREMENT,
-  `current_mark` INT NULL DEFAULT NULL,
+  `current_mark` INT NOT NULL,
+  `voted` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_users_has_course_course1_idx` (`course_id` ASC) VISIBLE,
   INDEX `fk_users_has_course_users1_idx` (`users_id` ASC) VISIBLE,
@@ -211,7 +212,7 @@ INSERT INTO course VALUES(default, 'course1', 'description1', 'subject1', 1, 0, 
 INSERT INTO course VALUES(default, 'course2', 'description2', 'subject2', 1, 0, 0,0);
 INSERT INTO course VALUES(default, 'course3', 'description3', 'subject3', 1, 13.99, 0,0);
 INSERT INTO course VALUES(default, 'course4', 'description4', 'subject4', 1, 20, 0,0);
-INSERT INTO subscription VALUES(1,1,0,'Started',DEFAULT);
+INSERT INTO subscription VALUES(2,1,'In progress',DEFAULT,0,0);
 INSERT INTO lecture VALUES(default, 'lecture1', 'theme', 'content', 1, 1);
 INSERT INTO lecture VALUES(default, 'lecture2', 'theme', 'content', 2, 1);
 INSERT INTO lecture VALUES(default, 'lecture3', 'theme', 'content', 3, 1);

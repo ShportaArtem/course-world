@@ -72,6 +72,7 @@ public class CourseController {
         model.addAttribute(CURRENT_COURSE_ATTRIBUTE, course);
         User user = userService.getCurrentUser();
         model.addAttribute(CURRENT_USER_ATTRIBUTE, user);
+        model.addAttribute("overallMark", courseService.overallMark(course));
         boolean isSubscribed = userService.isSubscribedByCourseId(user, courseId);
         model.addAttribute("isSubscribed", isSubscribed);
         if (isSubscribed) {
@@ -119,5 +120,11 @@ public class CourseController {
     public String startCourse(@PathVariable Integer id, Model model){
         subscriptionService.startCourse(userService.getCurrentUser().getId(), id);
         return "redirect:/courses/" + id + "/lectures";
+    }
+
+    @GetMapping("/{id}/finish")
+    public String finishCourse(@PathVariable Integer id, Model model){
+        subscriptionService.finishCourse(userService.getCurrentUser().getId(), id);
+        return "redirect:/courses/" + id;
     }
 }

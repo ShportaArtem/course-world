@@ -3,13 +3,46 @@
 <head th:insert="fragments.html :: head"></head>
 <body class="bg-secondary">
 <header th:insert="fragments.html :: mainHeader"></header>
-
+<th:block th:if="${subscription!=null && subscription.isVoted()}">
+    <style th:insert="fragments.html :: rating-voted-style"></style>
+</th:block>
+<th:block th:if="${subscription!=null && !subscription.isVoted()}">
+    <style th:insert="fragments.html :: rating-vote-style"></style>
+</th:block>
 <div class="container-fluid">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card mt-4">
                     <div class="card-body">
+                        <th:block th:if="${subscription!=null && !subscription.isVoted()}">
+                            <div class="rating">
+                                <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${subscription!=null && subscription.isVoted()}">
+                            <div class="d-flex justify-content-center">
+                                <div class="content text-center">
+                                    <div class="ratings">
+                                        <span class="product-rating">4.6</span><span>/5</span>
+                                        <div class="stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="rating-text">
+                                            <span>46 ratings & 15 reviews</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
                         <h3 class="card-title" style="text-transform: capitalize; color:#27A8CF;"
                             th:text="${currentCourse.name}"></h3>
                         <th:block th:if="${currentCourse.getPrice().equals(0.0)}">
@@ -39,14 +72,14 @@
                                     <a th:href="@{/courses/{id}/start(id = ${currentCourse.getId()})}"
                                        class="btn btn-primary" type="submit" th:text="#{button.startCourse}"></a>
                                 </th:block>
-                                <th:block th:if="${subscription.getStatus().equals('Started')}">
+                                <th:block th:if="${subscription.getStatus().equals('In progress')}">
                                     <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
                                        class="btn btn-primary" type="submit" th:text="#{button.viewLectures}"></a>
                                 </th:block>
                                 <p class="d-flex justify-content-between">
                                     <label class="card-text" th:text="#{course.subscription.status(${subscription.getStatus()})}"> </label>
                                     <label class="card-text"
-                                           th:text="#{course.subscription.mark(${subscription.getCurrentMark()})}"> </label>
+                                           th:text="#{course.subscription.mark(${subscription.getCurrentMark()}, ${overallMark})}"> </label>
                                 </p>
                             </th:block>
                             <th:block th:if="${!isSubscribed && !currentCourse.getCreator().equals(currentUser)}">

@@ -11,4 +11,8 @@ public interface SubscriptionService {
 
     void startCourse(Integer userId, Integer courseId);
 
+    void finishCourse(Integer userId, Integer courseId);
+
+    void addMark(Integer userId, Integer courseId, Integer mark);
+
 }

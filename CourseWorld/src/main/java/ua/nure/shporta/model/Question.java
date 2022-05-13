@@ -16,7 +16,7 @@ public class Question {
     private String secondAnswer;
     private String thirdAnswer;
     private String fourthAnswer;
-    private Integer correctAnswer;
+    private String correctAnswer;
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -71,11 +71,11 @@ public class Question {
         this.fourthAnswer = fourthAnswer;
     }
 
-    public Integer getCorrectAnswer() {
+    public String getCorrectAnswer() {
         return correctAnswer;
     }
 
-    public void setCorrectAnswer(Integer correctAnswer) {
+    public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 

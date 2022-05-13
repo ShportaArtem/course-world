@@ -25,15 +25,16 @@ public class QuestionsController {
     private QuestionService questionService;
 
     @GetMapping("/add")
-    public String addQuestion(@PathVariable Integer courseId, @RequestParam Integer lectureId, Model model){
+    public String addQuestion(@PathVariable Integer courseId, @RequestParam Integer lectureId, Model model) {
         model.addAttribute("newQuestion", new Question());
 
         return "addQuestion";
     }
 
     @PostMapping("/add")
-    public String addQuestion(@PathVariable Integer courseId, @RequestParam Integer lectureId, @ModelAttribute Question newQuestion, Model model){
+    public String addQuestion(@PathVariable Integer courseId, @RequestParam Integer lectureId, @ModelAttribute Question newQuestion, @RequestParam Integer correctAnswer, Model model) {
         newQuestion.setTest(((Lecture) model.getAttribute(CURRENT_LECTURE_ATTRIBUTE)).getTest());
+        setCorrectAnswer(newQuestion, correctAnswer);
         questionService.createQuestion(newQuestion);
 
         return "redirect:/courses/" + courseId + "/lectures/test?lectureId=" + lectureId;
@@ -43,5 +44,22 @@ public class QuestionsController {
     public void addAttributes(@PathVariable Integer courseId, @RequestParam Integer lectureId, Model model) throws DBException {
         model.addAttribute(CURRENT_COURSE_ATTRIBUTE, courseService.findCourseById(courseId));
         model.addAttribute(CURRENT_LECTURE_ATTRIBUTE, lectureService.findLectureById(lectureId));
+    }
+
+    private void setCorrectAnswer(Question question, Integer correctAnswer) {
+        switch (correctAnswer) {
+            case 1:
+                question.setCorrectAnswer(question.getFirstAnswer());
+                break;
+            case 2:
+                question.setCorrectAnswer(question.getSecondAnswer());
+                break;
+            case 3:
+                question.setCorrectAnswer(question.getThirdAnswer());
+                break;
+            default:
+                question.setCorrectAnswer(question.getFourthAnswer());
+                break;
+        }
     }
 }

@@ -11,6 +11,7 @@ public class Subscription implements Serializable {
     private Integer id;
     private Integer currentMark;
     private String status;
+    private boolean voted;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
@@ -58,5 +59,13 @@ public class Subscription implements Serializable {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
     }
 }

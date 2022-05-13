@@ -47,7 +47,7 @@
                         </th:block>
                     </th:block>
                     <th:block th:if="${!hasNext && !currentCourse.getCreator().equals(currentUser)}">
-                        <a th:href="@{/courses/{courseId}(courseId = ${currentCourse.getId()})}"
+                        <a th:href="@{/courses/{courseId}/finish(courseId = ${currentCourse.getId()})}"
                            class="btn btn-primary" type="submit" th:text="#{button.finish}"> </a>
                     </th:block>
 

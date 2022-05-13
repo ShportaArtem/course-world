@@ -18,4 +18,6 @@ public interface TestService {
     UsersTest findUsersTestByUserAndTest(User user, Test test);
 
     Integer checkTest(AnswersDTO answers, List<Question> questions);
+
+    UsersTest finishTest(User user, Test test, Integer mark);
 }

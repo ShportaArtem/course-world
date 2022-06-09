@@ -17,8 +17,9 @@ import ua.nure.shporta.service.impl.DefaultUserDetailsService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    DefaultUserDetailsService userDetailsService;
-
+    private DefaultUserDetailsService userDetailsService;
+    @Autowired
+    private DefaultAuthenticationSuccessHandler defaultAuthenticationSuccessHandler;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
@@ -27,14 +28,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/manage/courses*").hasRole("MANAGER")
+                .antMatchers("/courses/{courseId}/lectures").hasAnyRole("MANAGER","USER")
+                .antMatchers("/courses*").hasRole("USER")
+                .antMatchers("/user*").hasRole("USER")
+                .antMatchers("/").hasRole("USER")
+                .antMatchers("/pay*").hasRole("USER")
                 .antMatchers("/login*", "/user/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
+                .successHandler(defaultAuthenticationSuccessHandler)
                 .and()
                 .logout()
 //                .logoutUrl("/logout")

@@ -26,7 +26,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model){
-       Page<Course> page = courseService.findCoursesFirstPage();
+       Page<Course> page = courseService.findApprovedCoursesFirstPage();
         model.addAttribute("coursePage", page);
 
         if(page.getTotalPages()>0){

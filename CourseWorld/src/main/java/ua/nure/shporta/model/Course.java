@@ -16,6 +16,7 @@ public class Course implements Serializable {
 
     private String name;
     private String description;
+    private String status;
     private String subject;
     private Double price;
     private Double rate;
@@ -112,5 +113,13 @@ public class Course implements Serializable {
 
     public void setSumRate(Integer sumRate) {
         this.sumRate = sumRate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `courseworlddb`.`course` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(45) NULL DEFAULT NULL,
+  `status` VARCHAR(45) NULL DEFAULT NULL,
   `subject` VARCHAR(45) NULL DEFAULT NULL,
   `creator_id` INT NOT NULL,
   `price` DOUBLE NULL DEFAULT NULL,
@@ -209,10 +210,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO users VALUES(default, 'password', 'login', 'ROLE_USER', 'description');
 INSERT INTO users VALUES(default, 'password', 'username', 'ROLE_USER', 'post works');
-INSERT INTO course VALUES(default, 'course1', 'description1', 'subject1', 1, 0, 0,0,0);
-INSERT INTO course VALUES(default, 'course2', 'description2', 'subject2', 1, 0, 0,0,0);
-INSERT INTO course VALUES(default, 'course3', 'description3', 'subject3', 1, 13.99, 0,0,0);
-INSERT INTO course VALUES(default, 'course4', 'description4', 'subject4', 1, 20, 0,0,0);
+INSERT INTO users VALUES(default, 'password', 'manager', 'ROLE_MANAGER', 'manager');
+INSERT INTO course VALUES(default, 'course1', 'description1', 'Approved', 'subject1', 1, 0, 0,0,0);
+INSERT INTO course VALUES(default, 'course2', 'description2', 'Approved', 'subject2', 1, 0, 0,0,0);
+INSERT INTO course VALUES(default, 'course3', 'description3', 'Approved', 'subject3', 1, 13.99, 0,0,0);
+INSERT INTO course VALUES(default, 'course4', 'description4', 'Approved', 'subject4', 1, 20, 0,0,0);
 INSERT INTO subscription VALUES(2,1,'In progress',DEFAULT,0,0);
 INSERT INTO lecture VALUES(default, 'lecture1', 'theme', 'content', 1, 1);
 INSERT INTO lecture VALUES(default, 'lecture2', 'theme', 'content', 2, 1);

@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ua.nure.shporta.exception.DBException;
 import ua.nure.shporta.helper.Helper;
 import ua.nure.shporta.model.Course;
+import ua.nure.shporta.model.Subscription;
 import ua.nure.shporta.model.User;
 import ua.nure.shporta.service.CourseService;
 import ua.nure.shporta.service.SubscriptionService;
@@ -35,7 +36,7 @@ public class CourseController {
     @GetMapping
     public String listCourses(@RequestParam("page") Optional<Integer> page, Model model) {
 
-        Page<Course> coursePage = courseService.findCoursesPageable(page);
+        Page<Course> coursePage = courseService.findApprovedCoursesPageable(page);
         model.addAttribute("coursePage", coursePage);
 
         if (coursePage.getTotalPages() > 0) {
@@ -50,7 +51,7 @@ public class CourseController {
 
         Page<Course> coursePage = null;
         try {
-            coursePage = courseService.findCoursesByNamePageable(page, name);
+            coursePage = courseService.findApprovedCoursesByNamePageable(page, name);
         } catch (DBException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e
@@ -90,6 +91,14 @@ public class CourseController {
         return "editCourse";
     }
 
+    @PostMapping("/{id}/request")
+    public String requestCourse(@PathVariable(name = "id") int courseId, Model model) throws DBException {
+
+        courseService.requestCourse(courseId);
+
+        return "redirect:/courses/" + courseId;
+    }
+
     @PostMapping("/{id}/edit")
     public String editCourse(@ModelAttribute(name = CURRENT_COURSE_ATTRIBUTE) Course course, Model model) {
 
@@ -127,14 +136,45 @@ public class CourseController {
     }
 
     @GetMapping("/{id}/start")
-    public String startCourse(@PathVariable Integer id, Model model){
+    public String startCourse(@PathVariable Integer id, Model model) {
         subscriptionService.startCourse(userService.getCurrentUser().getId(), id);
         return "redirect:/courses/" + id + "/lectures";
     }
 
     @GetMapping("/{id}/finish")
-    public String finishCourse(@PathVariable Integer id, Model model){
+    public String finishCourse(@PathVariable Integer id, Model model) {
         subscriptionService.finishCourse(userService.getCurrentUser().getId(), id);
         return "redirect:/courses/" + id;
+    }
+
+    @GetMapping("/mylearning")
+    public String listMyLearning(@RequestParam(value = "page", required = false) Optional<Integer> page, Model model) {
+        User user = userService.getCurrentUser();
+        Page<Subscription> foundedPage = null;
+        try {
+            foundedPage = subscriptionService.findSubscriptionsByUserPage(page, user);
+        } catch (DBException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e
+            );
+        }
+        model.addAttribute("coursePage", foundedPage);
+
+        if (foundedPage.getTotalPages() > 0) {
+            model.addAttribute("pageNumbers", helper.getPages(foundedPage.getTotalPages()));
+        }
+        return "myLearning";
+    }
+
+    @GetMapping("/my")
+    public String listMyLearningCourses(@RequestParam(value = "page", required = false) Optional<Integer> page, Model model) {
+        User user = userService.getCurrentUser();
+        Page<Course> foundedPage = courseService.findCoursesByCreatorPageable(page, user);
+        model.addAttribute("coursePage", foundedPage);
+
+        if (foundedPage.getTotalPages() > 0) {
+            model.addAttribute("pageNumbers", helper.getPages(foundedPage.getTotalPages()));
+        }
+        return "myCourses";
     }
 }

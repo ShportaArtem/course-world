@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeader"></header>
+<div class="container-fluid">
+  <div class="container"><br>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4" th:text="#{myCourses}"></h1>
+            <p class="lead" th:text="#{myCourses.title}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row" th:if="${!coursePage.getContent().isEmpty()}">
+          <div class="col-lg-4 col-md-6 mb-4" th:each="course : ${coursePage.content}">
+            <div class="card h-100">
+
+              <div class="card-body">
+                <h4 class="card-title" style="text-transform: capitalize;">
+                  <a th:href="@{/courses/{id}(id=${course.getId()})}"
+                     style="color:#27A8CF;" th:text="${course.getName()}"></a>
+                </h4>
+                <th:block th:if="${course.getPrice().equals(0.0)}">
+                  <h5 th:text="#{freePrice}"></h5>
+                </th:block>
+                <th:block th:unless="${course.getPrice().equals(0.0)}">
+                  <h5 th:text="#{price(${course.getPrice()})}"></h5>
+                </th:block>
+                <h6 th:text="#{teacher(${course.getCreator().getLogin()})}"></h6>
+                <label class="card-text h-25"
+                       th:text="#{subject(${course.getSubject()})}"></label>
+                <label class="card-text h-25"
+                       th:text="#{course.subscription.status(${course.getStatus()})}"></label>
+                <p class="d-flex justify-content-between">
+                  <label class="card-text"
+                         th:text="#{rate(${course.getRate()})}"> </label>
+                  <small class="text-muted"
+                         th:text="#{numberOfVotes(${course.getNumberOfVotes()})}"> </small>
+                </p>
+
+              </div>
+
+              <div class="card-footer text-center">
+                <a th:href="@{/courses/{id}(id=${course.getId()})}"
+                   class="btn btn-primary" th:text="#{button.readmore}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div th:if="${coursePage.getContent().isEmpty()}" class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title" th:text="#{myCourses.noCourses}"></h5>
+            <a th:href="@{/courses/add}" class="card-link" th:text="#{myCourses.createCourse}"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" th:if="${coursePage.totalPages > 1}">
+      <div class="col-lg-12 d-flex justify-content-center">
+        <nav>
+          <ul class="pagination">
+            <li th:each="pageNumber : ${pageNumbers}" class="page-item"
+                th:classappend="${pageNumber==coursePage.number + 1} ?  active">
+              <th:block th:if="${pageNumber==coursePage.number + 1}">
+                                 <span class="page-link" th:text="${pageNumber}">
+                                    <span class="sr-only">(current)</span>
+                                 </span>
+              </th:block>
+              <th:block th:unless="${pageNumber==coursePage.number + 1}">
+                  <a class="page-link" th:href="@{/courses/my(page=${pageNumber})}"
+                     th:text="${pageNumber}">1</a>
+              </th:block>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

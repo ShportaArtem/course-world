@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeaderManager"></header>
+<style th:insert="fragments.html :: rating-voted-style"></style>
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mt-4">
+                    <div class="card-body">
+
+                        <h3 class="card-title" style="text-transform: capitalize; color:#27A8CF;"
+                            th:text="${currentCourse.name}"></h3>
+                        <th:block th:if="${currentCourse.getPrice().equals(0.0)}">
+                            <h4 th:text="#{freePrice}"></h4>
+                        </th:block>
+                        <th:block th:unless="${currentCourse.getPrice().equals(0.0)}">
+                            <h4 th:text="#{price(${currentCourse.getPrice()})}"></h4>
+                        </th:block>
+                        <h6 th:text="#{teacher(${currentCourse.getCreator().login})}"></h6>
+
+                        <label class="card-text h-25" th:text="#{subject(${currentCourse.getSubject()})}"></label>
+                        <label class="card-text h-25" th:text="#{course.subscription.status(${currentCourse.getStatus()})}"></label>
+                        <p class="card-text" th:text="${currentCourse.description}"></p>
+                        <div class="d-flex justify-content-left text-center">
+                            <div class="ratings">
+                                <span class="product-rating" th:text="#{rate(${currentCourse.getRate()})}"></span>
+                                <div class="stars">
+                                    <th:block th:each="i : ${#numbers.sequence(1, currentCourse.getRate(), 1)}">
+                                        <i class="fa fa-star"></i>
+                                    </th:block>
+                                </div>
+                                <div class="rating-text">
+                                    <span th:text="#{numberOfVotes(${currentCourse.getNumberOfVotes()})}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <form method="POST" th:action="@{/manage/courses/{id}/approve(id=${currentCourse.getId()})}">
+                                <button type="submit" name="submit" value="value" class="btn btn-success" th:text="#{button.approve}"></button>
+                            </form>
+                            <form method="POST" th:action="@{/manage/courses/{id}/cancel(id=${currentCourse.getId()})}">
+                                <button type="submit" name="submit" value="value" class="btn btn-danger" th:text="#{button.cancel}"></button>
+                            </form>
+                            <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
+                                   class="btn btn-primary" type="submit" th:text="#{button.viewLectures}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

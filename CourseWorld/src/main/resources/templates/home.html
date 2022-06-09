@@ -84,7 +84,7 @@
                             </th:block>
                             <th:block th:unless="${pageNumber==coursePage.number + 1}">
                                 <th:block th:if="${searchedName!=null}">
-                                    <a class="page-link" th:href="@{/courses/search(page=${pageNumber}, name= ${searchedName})}" th:text="${pageNumber}">1</a>
+                                    <a class="page-link" th:href="@{/courses/search(page=${pageNumber}, name= ${searchedName})}" th:text="${pageNumber}"></a>
                                 </th:block>
                                 <th:block th:if="${searchedName == null}">
                                     <a class="page-link" th:href="@{/courses(page=${pageNumber})}" th:text="${pageNumber}">1</a>

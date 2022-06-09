@@ -2,7 +2,12 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:insert="fragments.html :: head"></head>
 <body class="bg-secondary">
-<header th:insert="fragments.html :: mainHeader"></header>
+<th:block sec:authorize="hasRole('ROLE_USER')">
+    <header th:insert="fragments.html :: mainHeader"></header>
+</th:block>
+<th:block sec:authorize="hasRole('ROLE_MANAGER')">
+    <header th:insert="fragments.html :: mainHeaderManager"></header>
+</th:block>
 
 <div class="container">
     <div class="row">
@@ -46,7 +51,7 @@
                                class="btn btn-primary" type="submit" th:text="#{button.addTest.for}"></a>
                         </th:block>
                     </th:block>
-                    <th:block th:if="${!hasNext && !currentCourse.getCreator().equals(currentUser)}">
+                    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${!hasNext && !currentCourse.getCreator().equals(currentUser)}">
                         <a th:href="@{/courses/{courseId}/finish(courseId = ${currentCourse.getId()})}"
                            class="btn btn-primary" type="submit" th:text="#{button.finish}"> </a>
                     </th:block>

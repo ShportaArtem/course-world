@@ -4,16 +4,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import ua.nure.shporta.exception.DBException;
 import ua.nure.shporta.model.Course;
+import ua.nure.shporta.model.User;
 
 import java.util.Optional;
 
 @Component
 public interface CourseService {
-    Page<Course> findCoursesPageable(Optional<Integer> page);
+    void requestCourse(Integer courseId);
 
-    Page<Course> findCoursesByNamePageable(Optional<Integer> page, String name) throws DBException;
+    void approveCourse(Integer courseId);
 
-    Page<Course> findCoursesFirstPage();
+    void cancelCourse(Integer courseId);
+
+    Page<Course> findApprovedCoursesPageable(Optional<Integer> page);
+
+    Page<Course> findCoursesNeedToManagePageable(Optional<Integer> page);
+
+    Page<Course> findApprovedCoursesByNamePageable(Optional<Integer> page, String name) throws DBException;
+
+    Page<Course> findCoursesByCreatorPageable(Optional<Integer> page, User creator);
+
+    Page<Course> findApprovedCoursesFirstPage();
 
     Course findCourseById(int courseId) throws DBException;
 

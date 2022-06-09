@@ -3,9 +3,7 @@
 <head th:insert="fragments.html :: head"></head>
 <body class="bg-secondary">
 <header th:insert="fragments.html :: mainHeader"></header>
-<th:block th:if="${subscription!=null && subscription.isVoted()}">
     <style th:insert="fragments.html :: rating-voted-style"></style>
-</th:block>
 <th:block th:if="${subscription!=null && !subscription.isVoted()}">
     <style th:insert="fragments.html :: rating-vote-style"></style>
 </th:block>
@@ -27,6 +25,7 @@
                         <h6 th:text="#{teacher(${currentCourse.getCreator().login})}"></h6>
 
                         <label class="card-text h-25" th:text="#{subject(${currentCourse.getSubject()})}"></label>
+                        <label th:if="${currentCourse.getCreator().equals(currentUser)}" class="card-text h-25" th:text="#{course.subscription.status(${currentCourse.getStatus()})}"></label>
                         <p class="card-text" th:text="${currentCourse.description}"></p>
                         <th:block th:if="${subscription!=null && !subscription.isVoted() && subscription.getStatus().equals('Finished')}">
                            <form th:action="@{/courses/{id}/vote(id=${currentCourse.getId()})}" method="post">
@@ -62,6 +61,9 @@
                                    class="btn btn-primary" type="submit" th:text="#{button.editCourse}"></a>
                                 <a th:href="@{/courses/{courseId}/lectures(courseId = ${currentCourse.getId()})}"
                                    class="btn btn-primary" type="submit" th:text="#{button.viewLectures}"></a>
+                                <form method="POST" th:if="${currentCourse.getStatus().equals('Canceled')}" th:action="@{/courses/{id}/request(id = ${currentCourse.getId()})}">
+                                    <button type="submit" name="submit" value="value" class="btn btn-primary" th:text="#{button.requestApprove}"></button>
+                                </form>
                             </th:block>
                             <th:block th:if="${isSubscribed}">
                                 <th:block th:if="${subscription.getStatus().equals('Subscribed')}">
@@ -85,8 +87,9 @@
                                     </form>
                                 </th:block>
                                 <th:block th:unless="${currentCourse.getPrice().equals(0.0)}">
-                                    <a href="/StudyPlace/Controller?command=subscribeCourse&courseId=${sessionScope.thisCourse.getId()}"
-                                       class="btn btn-primary" type="submit" th:text="#{button.buy}"></a>
+                                    <form method="POST" th:action="@{/pay(courseId=${currentCourse.getId()},price = ${currentCourse.getPrice()})}">
+                                        <button type="submit" name="submit" value="value" class="btn btn-primary" th:text="#{button.buy}"></button>
+                                    </form>
                                 </th:block>
                             </th:block>
 

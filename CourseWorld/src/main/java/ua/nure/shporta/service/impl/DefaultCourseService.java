@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import ua.nure.shporta.constants.CourseConstants;
 import ua.nure.shporta.dao.CourseDAO;
 import ua.nure.shporta.dao.UserDAO;
 import ua.nure.shporta.exception.DBException;
@@ -18,6 +19,8 @@ import ua.nure.shporta.service.UserService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -29,18 +32,46 @@ public class DefaultCourseService implements CourseService {
     private UserService userService;
     @Autowired
     private CourseDAO courseDAO;
-    @Autowired
-    private UserDAO userDAO;
 
     @Override
-    public Page<Course> findCoursesPageable(Optional<Integer> page) {
-        int currentPage = page.orElse(1);
-        return courseDAO.findAll(PageRequest.of(currentPage - 1, this.pageSize));
+    public void requestCourse(Integer courseId) {
+        Course course = courseDAO.findById(courseId).get();
+        course.setStatus(CourseConstants.CHANGED_STATUS);
+        courseDAO.saveAndFlush(course);
     }
 
     @Override
-    public Page<Course> findCoursesByNamePageable(Optional<Integer> page, String name) throws DBException {
-        Page<Course> coursePage = courseDAO.findAllByNameContaining(name, PageRequest.of(page.orElse(1) - 1, this.pageSize));
+    public void approveCourse(Integer courseId) {
+        Course course = courseDAO.findById(courseId).get();
+        course.setStatus(CourseConstants.APPROVED_STATUS);
+        courseDAO.saveAndFlush(course);
+    }
+
+    @Override
+    public void cancelCourse(Integer courseId) {
+        Course course = courseDAO.findById(courseId).get();
+        course.setStatus(CourseConstants.CANCELED_STATUS);
+        courseDAO.saveAndFlush(course);
+    }
+
+    @Override
+    public Page<Course> findApprovedCoursesPageable(Optional<Integer> page) {
+        int currentPage = page.orElse(1);
+
+        return courseDAO.findAllByStatusEquals(PageRequest.of(currentPage - 1, this.pageSize), CourseConstants.APPROVED_STATUS);
+    }
+
+    @Override
+    public Page<Course> findCoursesNeedToManagePageable(Optional<Integer> page) {
+        List<String> statuses = Arrays.asList(CourseConstants.CREATED_STATUS, CourseConstants.CHANGED_STATUS);
+        Page<Course> coursePage = courseDAO.findAllByStatusIn(PageRequest.of(page.orElse(1) - 1, this.pageSize), statuses);
+
+        return coursePage;
+    }
+
+    @Override
+    public Page<Course> findApprovedCoursesByNamePageable(Optional<Integer> page, String name) throws DBException {
+        Page<Course> coursePage = courseDAO.findAllByNameContainingAndStatusEquals(name, CourseConstants.APPROVED_STATUS, PageRequest.of(page.orElse(1) - 1, this.pageSize));
         if (coursePage.getContent().isEmpty()) {
             throw new DBException(ExceptionMessages.NO_RESULTS_FOR_SEARCH);
         }
@@ -48,10 +79,16 @@ public class DefaultCourseService implements CourseService {
     }
 
     @Override
-    public Page<Course> findCoursesFirstPage() {
+    public Page<Course> findCoursesByCreatorPageable(Optional<Integer> page, User creator) {
+        Page<Course> coursePage = courseDAO.findAllByCreator(creator, PageRequest.of(page.orElse(1) - 1, this.pageSize));
+        return coursePage;
+    }
+
+    @Override
+    public Page<Course> findApprovedCoursesFirstPage() {
         Pageable findFirstPage = PageRequest.of(0, this.pageSize);
 
-        return courseDAO.findAll(findFirstPage);
+        return courseDAO.findAllByStatusEquals(findFirstPage,CourseConstants.APPROVED_STATUS);
     }
 
     @Override
@@ -63,6 +100,7 @@ public class DefaultCourseService implements CourseService {
     public Course createCourse(Course course) {
         course.setRate(0d);
         course.setNumberOfVotes(0);
+        course.setStatus(CourseConstants.CREATED_STATUS);
         User user = userService.getCurrentUser();
         course.setCreator(user);
         return courseDAO.saveAndFlush(course);

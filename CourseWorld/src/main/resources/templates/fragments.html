@@ -158,7 +158,7 @@
                             <strong sec:authentication="name"></strong>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                            <a class="dropdown-item" href="?lang=en" th:text="#{profile}"></a>
+                            <a class="dropdown-item" href="#" th:text="#{profile}"></a>
                             <a class="dropdown-item" th:href="@{/logout}" th:text="#{logOut}"></a>
                         </div>
                     </li>
@@ -190,7 +190,40 @@
                                 <strong sec:authentication="name"></strong>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                <a class="dropdown-item" href="?lang=en" th:text="#{profile}"></a>
+                                <a class="dropdown-item" href="#" th:text="#{profile}"></a>
+                                <a class="dropdown-item" th:href="@{/logout}" th:text="#{logOut}"></a>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <header th:fragment="mainHeaderAdmin">
+        <div class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <div class="container d-flex justify-content-between">
+                <a  class="navbar-brand d-flex align-items-center" th:href="@{/admin}">
+                    <strong>CourseWorld</strong>
+                </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <div class="navbar-nav">
+                        <li class="nav-item dropdown p-1">
+                            <a class="dropdown-toggle btn btn-outline-warning" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                <strong th:text="#{language}"></strong>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="?lang=en">English</a>
+                                <a class="dropdown-item" href="?lang=ua">Українська</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown p-1">
+                            <a class="dropdown-toggle btn btn-outline-warning" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                <strong sec:authentication="name"></strong>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                <a class="dropdown-item" href="#" th:text="#{profile}"></a>
                                 <a class="dropdown-item" th:href="@{/logout}" th:text="#{logOut}"></a>
                             </div>
                         </li>

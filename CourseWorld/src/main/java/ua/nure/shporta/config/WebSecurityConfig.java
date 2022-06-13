@@ -28,8 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/manage/courses*").hasRole("MANAGER")
-                .antMatchers("/courses/{courseId}/lectures").hasAnyRole("MANAGER","USER")
+                .antMatchers("/manage/courses*").hasRole("MODERATOR")
+                .antMatchers("/courses/{courseId}/lectures").hasAnyRole("MODERATOR","USER")
                 .antMatchers("/courses*").hasRole("USER")
                 .antMatchers("/user*").hasRole("USER")
                 .antMatchers("/").hasRole("USER")

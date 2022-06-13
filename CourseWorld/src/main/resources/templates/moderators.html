@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeaderAdmin"></header>
+<div class="container-fluid">
+  <div class="container"><br>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4" th:text="#{admin.moderator}"></h1>
+            <p class="lead" th:text="#{admin.moderator.title}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card mx-0 mb-4">
+          <h5 class="card-header" th:text="#{admin.createModerator}"></h5>
+          <div class="card-body">
+            <div class="input-group">
+              <input disabled readonly type="text" id="add" class="form-control" th:placeholder="#{admin.createModerator.title}">
+              <span class="input-group-append">
+                <a th:href="@{/admin/moderator/add}" class="btn btn-primary" type="submit" th:text="#{button.register}"></a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row" th:if="${!moderatorsPage.getContent().isEmpty()}">
+          <div class="col-lg-4 col-md-6 mb-4" th:each="user : ${moderatorsPage.content}">
+            <div class="card h-100">
+
+              <div class="card-body">
+                <h4 class="card-title" style="text-transform: capitalize;">
+                  <a th:href="@{/manage/courses/{id}(id=${user.getId()})}"
+                     style="color:#27A8CF;" th:text="${user.getLogin()}"></a>
+                </h4>
+                <h5 th:text="#{role(${user.getRole()})}"></h5>
+                <h6 th:text="#{user.description(${user.getDescription})}"></h6>
+              </div>
+
+              <div class="card-footer text-center">
+                <form method="POST" th:action="@{/admin/moderator/{id}/delete(id=${user.getId()})}">
+                  <button type="submit" name="submit" value="value" class="btn btn-danger" th:text="#{button.delete}"></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div th:if="${moderatorsPage.getContent().isEmpty()}" class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title" th:text="#{admin.moderator.noContent}"></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" th:if="${moderatorsPage.totalPages > 1}">
+      <div class="col-lg-12 d-flex justify-content-center">
+        <nav>
+          <ul class="pagination">
+            <li th:each="pageNumber : ${pageNumbers}" class="page-item"
+                th:classappend="${pageNumber==moderatorsPage.number + 1} ?  active">
+              <th:block th:if="${pageNumber==moderatorsPage.number + 1}">
+                                 <span class="page-link" th:text="${pageNumber}">
+                                    <span class="sr-only">(current)</span>
+                                 </span>
+              </th:block>
+              <th:block th:unless="${pageNumber==moderatorsPage.number + 1}">
+                <a class="page-link" th:href="@{/admin(page=${pageNumber})}"
+                   th:text="${pageNumber}">1</a>
+              </th:block>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

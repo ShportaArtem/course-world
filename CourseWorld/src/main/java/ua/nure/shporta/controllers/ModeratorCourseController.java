@@ -20,7 +20,7 @@ import static ua.nure.shporta.controllers.ControllerConstants.CURRENT_USER_ATTRI
 
 @Controller
 @RequestMapping("/manage/courses")
-public class ManagerCourseController {
+public class ModeratorCourseController {
     @Autowired
     private Helper helper;
     @Autowired

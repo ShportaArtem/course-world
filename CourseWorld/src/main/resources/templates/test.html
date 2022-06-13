@@ -5,7 +5,7 @@
 <th:block sec:authorize="hasRole('ROLE_USER')">
     <header th:insert="fragments.html :: mainHeader"></header>
 </th:block>
-<th:block sec:authorize="hasRole('ROLE_MANAGER')">
+<th:block sec:authorize="hasRole('ROLE_MODERATOR')">
     <header th:insert="fragments.html :: mainHeaderManager"></header>
 </th:block>
 

@@ -70,7 +70,7 @@ public class DefaultTestService implements TestService {
         return usersTest;
     }
 
-    private UsersTest buildUsersTest(User user, Test test, Integer mark) {
+    protected UsersTest buildUsersTest(User user, Test test, Integer mark) {
         UsersTest usersTest = new UsersTest();
         usersTest.setTest(test);
         usersTest.setUser(user);

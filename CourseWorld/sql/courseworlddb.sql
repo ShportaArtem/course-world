@@ -210,7 +210,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO users VALUES(default, 'password', 'login', 'ROLE_USER', 'description');
 INSERT INTO users VALUES(default, 'password', 'username', 'ROLE_USER', 'post works');
-INSERT INTO users VALUES(default, 'password', 'manager', 'ROLE_MANAGER', 'manager');
+INSERT INTO users VALUES(default, 'password', 'moderator', 'ROLE_MODERATOR', 'moderator');
+INSERT INTO users VALUES(default, 'password', 'admin', 'ROLE_ADMIN', 'admin');
 INSERT INTO course VALUES(default, 'course1', 'description1', 'Approved', 'subject1', 1, 0, 0,0,0);
 INSERT INTO course VALUES(default, 'course2', 'description2', 'Approved', 'subject2', 1, 0, 0,0,0);
 INSERT INTO course VALUES(default, 'course3', 'description3', 'Approved', 'subject3', 1, 13.99, 0,0,0);

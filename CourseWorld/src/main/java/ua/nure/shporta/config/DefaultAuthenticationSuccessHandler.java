@@ -3,13 +3,10 @@ package ua.nure.shporta.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import ua.nure.shporta.constants.UserConstants;
-import ua.nure.shporta.model.User;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,9 +27,9 @@ public class DefaultAuthenticationSuccessHandler implements AuthenticationSucces
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         authorities.forEach(authority ->
         {
-            if(authority.getAuthority().equals(UserConstants.MANAGER_ROLE))
+            if(authority.getAuthority().equals(UserConstants.MODERATOR_ROLE))
             {
-                session.setAttribute("role", UserConstants.MANAGER_ROLE);
+                session.setAttribute("role", UserConstants.MODERATOR_ROLE);
                 try
                 {
                     httpServletResponse.sendRedirect("/CourseWorld/manage/courses");
@@ -48,6 +45,18 @@ public class DefaultAuthenticationSuccessHandler implements AuthenticationSucces
                 try
                 {
                     httpServletResponse.sendRedirect("/CourseWorld/");
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+            else if(authority.getAuthority().equals(UserConstants.ADMIN_ROLE))
+            {
+                session.setAttribute("role", UserConstants.ADMIN_ROLE);
+                try
+                {
+                    httpServletResponse.sendRedirect("/CourseWorld/admin");
                 }
                 catch (IOException e)
                 {

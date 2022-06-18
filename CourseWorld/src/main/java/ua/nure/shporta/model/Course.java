@@ -17,6 +17,7 @@ public class Course implements Serializable {
     private String name;
     private String description;
     private String status;
+    private String comments;
     private String subject;
     private Double price;
     private Double rate;
@@ -121,5 +122,13 @@ public class Course implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }

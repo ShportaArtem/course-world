@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="fragments.html :: head"></head>
+<body class="bg-secondary">
+<header th:insert="fragments.html :: mainHeaderManager"></header>
+
+<div class="container mt-sm-5 " style="width: 30%;">
+    <div class="jumbotron jumbotron-liquid pt-3">
+        <form action="#" th:action="@{/manage/courses/{id}/cancel(id=${course.getId()})}" method="post">
+            <label th:text="#{course.cancel(${course.getName()})}"></label>
+
+            <div class="form-group">
+                <label for="comments" th:text="#{course.cancel.comments}"></label>
+                <input type="text" name="comments" class="form-control"/>
+                <small id="comments" class="form-text text-muted" th:text="#{course.cancel.comments.title}"></small>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-success" data-toggle="tooltip bg-dark" data-placement="bottom" th:text="#{button.cancel}"></button>
+                <button type="button" class="btn btn-outline-danger" th:text="#{button.back}" onclick="javascript:history.back()"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:insert="fragments.html :: scripts"></div>
+<footer th:insert="fragments.html :: footer"></footer>
+</body>
+</html>

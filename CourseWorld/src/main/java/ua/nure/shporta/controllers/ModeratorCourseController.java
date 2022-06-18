@@ -58,10 +58,17 @@ public class ModeratorCourseController {
     }
 
     @PostMapping("/{id}/cancel")
-    public String cancelCourse(@PathVariable(name = "id") int courseId, Model model) throws DBException {
+    public String cancelCourse(@PathVariable(name = "id") int courseId, String comments, Model model) throws DBException {
 
-        courseService.cancelCourse(courseId);
+        courseService.cancelCourse(courseId, comments);
 
         return "redirect:/manage/courses/";
+    }
+
+    @GetMapping("/{id}/cancel")
+    public String getCancelCourseForm(@PathVariable(name = "id") int courseId, Model model) throws DBException {
+        Course course = courseService.findCourseById(courseId);
+        model.addAttribute("course", course);
+        return "cancelCourse";
     }
 }

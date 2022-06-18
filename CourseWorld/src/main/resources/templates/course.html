@@ -4,9 +4,7 @@
 <body class="bg-secondary">
 <header th:insert="fragments.html :: mainHeader"></header>
     <style th:insert="fragments.html :: rating-voted-style"></style>
-<th:block th:if="${subscription!=null && !subscription.isVoted()}">
     <style th:insert="fragments.html :: rating-vote-style"></style>
-</th:block>
 <div class="container-fluid">
     <div class="container">
         <div class="row">
@@ -98,6 +96,20 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row" th:if="${currentCourse.getCreator().equals(currentUser) && currentCourse.getStatus().equals('Canceled')}">
+            <div class="col-lg-6">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h1 class="display-4" th:text="#{course.cancel.comments}"></h1>
+                        <p class="lead" th:text="#{course.cancel.comments.author}"></p>
+                        <hr class="my-4">
+                        <p th:text="${currentCourse.getComments()}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
     </div>
 </div>
 <div th:insert="fragments.html :: scripts"></div>

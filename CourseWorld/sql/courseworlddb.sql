@@ -43,8 +43,9 @@ DROP TABLE IF EXISTS `courseworlddb`.`course` ;
 CREATE TABLE IF NOT EXISTS `courseworlddb`.`course` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL DEFAULT NULL,
-  `description` VARCHAR(45) NULL DEFAULT NULL,
+  `description` VARCHAR(200) NULL DEFAULT NULL,
   `status` VARCHAR(45) NULL DEFAULT NULL,
+  `comments` VARCHAR(200) NULL DEFAULT NULL,
   `subject` VARCHAR(45) NULL DEFAULT NULL,
   `creator_id` INT NOT NULL,
   `price` DOUBLE NULL DEFAULT NULL,
@@ -208,14 +209,14 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-INSERT INTO users VALUES(default, 'password', 'login', 'ROLE_USER', 'description');
-INSERT INTO users VALUES(default, 'password', 'username', 'ROLE_USER', 'post works');
+INSERT INTO users VALUES(default, 'password', 'Bob', 'ROLE_USER', 'description');
+INSERT INTO users VALUES(default, 'password', 'Mark', 'ROLE_USER', 'post works');
 INSERT INTO users VALUES(default, 'password', 'moderator', 'ROLE_MODERATOR', 'moderator');
 INSERT INTO users VALUES(default, 'password', 'admin', 'ROLE_ADMIN', 'admin');
-INSERT INTO course VALUES(default, 'course1', 'description1', 'Approved', 'subject1', 1, 0, 0,0,0);
-INSERT INTO course VALUES(default, 'course2', 'description2', 'Approved', 'subject2', 1, 0, 0,0,0);
-INSERT INTO course VALUES(default, 'course3', 'description3', 'Approved', 'subject3', 1, 13.99, 0,0,0);
-INSERT INTO course VALUES(default, 'course4', 'description4', 'Approved', 'subject4', 1, 20, 0,0,0);
+INSERT INTO course VALUES(default, 'Програмування на Java', 'Цей курс призначений для підвищення вашого рівня у програмуванні на Java', 'Approved',null ,'Програмування', 1, 0, 0,0,0);
+INSERT INTO course VALUES(default, 'Часи англійської мови', 'У цьому курсі ви дізнаєтеся все про часи в англійській мові', 'Approved',null , 'Вивчення мов', 1, 0, 0,0,0);
+INSERT INTO course VALUES(default, 'Геометрія', 'Цей курс введе вас у основи геометрії', 'Approved',null ,'Математика', 1, 13.99, 0,0,0);
+INSERT INTO course VALUES(default, 'course4', 'description4', 'Approved',null ,'subject4', 1, 20, 0,0,0);
 INSERT INTO subscription VALUES(2,1,'In progress',DEFAULT,0,0);
 INSERT INTO lecture VALUES(default, 'lecture1', 'theme', 'content', 1, 1);
 INSERT INTO lecture VALUES(default, 'lecture2', 'theme', 'content', 2, 1);

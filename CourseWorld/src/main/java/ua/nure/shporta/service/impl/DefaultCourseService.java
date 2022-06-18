@@ -48,9 +48,10 @@ public class DefaultCourseService implements CourseService {
     }
 
     @Override
-    public void cancelCourse(Integer courseId) {
+    public void cancelCourse(Integer courseId, String comments) {
         Course course = courseDAO.findById(courseId).get();
         course.setStatus(CourseConstants.CANCELED_STATUS);
+        course.setComments(comments);
         courseDAO.saveAndFlush(course);
     }
 

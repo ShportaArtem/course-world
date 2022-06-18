@@ -14,7 +14,7 @@ public interface CourseService {
 
     void approveCourse(Integer courseId);
 
-    void cancelCourse(Integer courseId);
+    void cancelCourse(Integer courseId, String comments);
 
     Page<Course> findApprovedCoursesPageable(Optional<Integer> page);
 
